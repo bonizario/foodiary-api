@@ -33,6 +33,7 @@ build:
 
 functions:
   - ${file(./serverless/functions/auth.yml)}
+  - ${file(./serverless/functions/meals.yml)}
 
 resources:
   - ${file(./serverless/resources/user-pool.yml)}
