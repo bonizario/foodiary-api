@@ -6,7 +6,7 @@ export async function handler(
   event.response.claimsAndScopeOverrideDetails = {
     accessTokenGeneration: {
       claimsToAddOrOverride: {
-        internalId: "ksuid",
+        internalId: event.request.userAttributes["custom:internalId"]!,
       },
     },
   };
