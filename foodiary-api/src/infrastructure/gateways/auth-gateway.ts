@@ -1,7 +1,11 @@
 import { createHmac } from "node:crypto";
 import { format } from "node:util";
 
-import { InitiateAuthCommand, SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
+import {
+  GetTokensFromRefreshTokenCommand,
+  InitiateAuthCommand,
+  SignUpCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
 
 import { Injectable } from "@/core/decorators/injectable";
 import { cognitoClient } from "@/infrastructure/clients/cognito-client";
@@ -31,11 +35,9 @@ export class AuthGateway {
       throw new Error(format("Failed to sign in user with email %s", email));
     }
 
-    const { AccessToken: accessToken, RefreshToken: refreshToken } = AuthenticationResult;
-
     return {
-      accessToken,
-      refreshToken,
+      accessToken: AuthenticationResult.AccessToken,
+      refreshToken: AuthenticationResult.RefreshToken,
     };
   }
 
@@ -68,6 +70,27 @@ export class AuthGateway {
     };
   }
 
+  public async refreshToken({
+    refreshToken,
+  }: AuthGateway.RefreshTokenParams): Promise<AuthGateway.RefreshTokenResult> {
+    const command = new GetTokensFromRefreshTokenCommand({
+      ClientId: this.config.auth.cognito.clientId,
+      RefreshToken: refreshToken,
+      ClientSecret: this.config.auth.cognito.clientSecret,
+    });
+
+    const { AuthenticationResult } = await cognitoClient.send(command);
+
+    if (!AuthenticationResult?.AccessToken || !AuthenticationResult?.RefreshToken) {
+      throw new Error("Cannot refresh token");
+    }
+
+    return {
+      accessToken: AuthenticationResult.AccessToken,
+      refreshToken: AuthenticationResult.RefreshToken,
+    };
+  }
+
   private getSecretHash(email: string): string {
     const { clientId, clientSecret } = this.config.auth.cognito;
 
@@ -92,6 +115,15 @@ export namespace AuthGateway {
   };
 
   export type SignInResult = {
+    accessToken: string;
+    refreshToken: string;
+  };
+
+  export type RefreshTokenParams = {
+    refreshToken: string;
+  };
+
+  export type RefreshTokenResult = {
     accessToken: string;
     refreshToken: string;
   };

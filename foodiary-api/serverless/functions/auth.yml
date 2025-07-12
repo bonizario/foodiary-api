@@ -1,3 +1,10 @@
+signUp:
+  handler: src/main/functions/auth/sign-up.handler
+  events:
+    - httpApi:
+        method: POST
+        path: /auth/sign-up
+
 signIn:
   handler: src/main/functions/auth/sign-in.handler
   events:
@@ -5,12 +12,12 @@ signIn:
         method: POST
         path: /auth/sign-in
 
-signUp:
-  handler: src/main/functions/auth/sign-up.handler
+refreshToken:
+  handler: src/main/functions/auth/refresh-token.handler
   events:
     - httpApi:
         method: POST
-        path: /auth/sign-up
+        path: /auth/refresh-token
 
 preSignUpTrigger:
   handler: src/main/functions/auth/pre-sign-up-trigger.handler

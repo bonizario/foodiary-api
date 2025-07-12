@@ -6,11 +6,10 @@ export class EmailAlreadyInUseError extends ApplicationError {
 
   public override code: ErrorCode;
 
-  constructor() {
-    super();
+  constructor(options?: ErrorOptions) {
+    super("This email is already in use", options);
 
     this.code = ErrorCode.EMAIL_ALREADY_IN_USE;
-    this.message = "This email is already in use";
     this.name = "EmailAlreadyInUseError";
   }
 }
