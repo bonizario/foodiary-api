@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { Controller } from "@/application/contracts/controller";
-import { refreshTokenSchema } from "@/application/controllers/auth/schemas";
+import { refreshTokenSchema } from "@/application/controllers/auth/schemas/refresh-token-schema";
 import { RefreshTokenUseCase } from "@/application/use-cases/auth/refresh-token-use-case";
 import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";

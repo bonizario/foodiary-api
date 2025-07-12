@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 import { Controller } from "@/application/contracts/controller";
-import { emailSchema, signUpPasswordSchema } from "@/application/controllers/auth/schemas";
+import { emailSchema } from "@/application/controllers/auth/schemas/email-schema";
+import { signUpPasswordSchema } from "@/application/controllers/auth/schemas/sign-up-password-schema";
 import { SignUpUseCase } from "@/application/use-cases/auth/sign-up-use-case";
 import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";

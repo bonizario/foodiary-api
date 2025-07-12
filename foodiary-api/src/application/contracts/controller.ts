@@ -60,8 +60,7 @@ export namespace Controller {
     ? PublicRequest<TBody, TParams, TQueryParams>
     : AuthenticatedRequest<TBody, TParams, TQueryParams>;
 
-  export type Response<TBody = undefined> = {
-    statusCode: number;
-    body?: TBody;
-  };
+  export type Response<TBody = undefined> = TBody extends undefined
+    ? { statusCode: number }
+    : { statusCode: number; body?: TBody };
 }

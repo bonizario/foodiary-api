@@ -2,9 +2,11 @@ import { createHmac } from "node:crypto";
 import { format } from "node:util";
 
 import {
+  ForgotPasswordCommand,
   GetTokensFromRefreshTokenCommand,
   InitiateAuthCommand,
   SignUpCommand,
+  UserNotFoundException,
 } from "@aws-sdk/client-cognito-identity-provider";
 
 import { Injectable } from "@/core/decorators/injectable";
@@ -91,6 +93,26 @@ export class AuthGateway {
     };
   }
 
+  public async forgotPassword({
+    email,
+  }: AuthGateway.ForgotPasswordParams): Promise<AuthGateway.ForgotPasswordResult> {
+    const command = new ForgotPasswordCommand({
+      ClientId: this.config.auth.cognito.clientId,
+      Username: email,
+      SecretHash: this.getSecretHash(email),
+    });
+
+    try {
+      await cognitoClient.send(command);
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        // swallow the error to prevent user enumeration
+        return;
+      }
+      throw error;
+    }
+  }
+
   private getSecretHash(email: string): string {
     const { clientId, clientSecret } = this.config.auth.cognito;
 
@@ -127,4 +149,10 @@ export namespace AuthGateway {
     accessToken: string;
     refreshToken: string;
   };
+
+  export type ForgotPasswordParams = {
+    email: string;
+  };
+
+  export type ForgotPasswordResult = void;
 }
