@@ -1,22 +1,23 @@
 import { Controller } from "@/application/contracts/controller";
 import { Injectable } from "@/core/decorators/injectable";
-import KSUID from "ksuid";
 
 type ResponseBody = {
-  mealId: string;
+  accountId: string | null;
 };
 
 @Injectable()
-export class CreateMealController extends Controller<ResponseBody> {
+export class CreateMealController extends Controller<"authenticated", ResponseBody> {
   constructor() {
     super();
   }
 
-  protected override async handle(): Promise<Controller.Response<ResponseBody>> {
+  protected override async handle({
+    accountId,
+  }: Controller.Request<"authenticated">): Promise<Controller.Response<ResponseBody>> {
     return {
       statusCode: 201,
       body: {
-        mealId: KSUID.randomSync().string,
+        accountId,
       },
     };
   }

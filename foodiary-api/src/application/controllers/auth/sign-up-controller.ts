@@ -22,13 +22,13 @@ type ResponseBody = {
 
 @Injectable()
 @Schema(schema)
-export class SignUpController extends Controller<ResponseBody> {
+export class SignUpController extends Controller<"public", ResponseBody> {
   constructor(private readonly signUpUseCase: SignUpUseCase) {
     super();
   }
 
   protected override async handle(
-    request: Controller.Request<RequestBody>,
+    request: Controller.Request<"public", RequestBody>,
   ): Promise<Controller.Response<ResponseBody>> {
     const { accessToken, refreshToken } = await this.signUpUseCase.execute(request.body.account);
 
