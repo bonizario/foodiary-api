@@ -33,8 +33,16 @@ confirmForgotPassword:
         method: POST
         path: /auth/forgot-password/confirm
 
+# Currently, serverless framework does not provide any way to specify
+# which event version to use for the pre token generation trigger.
+# Therefore, this lambda needs to be manually configured to support the V2 event.
+# See: UserPool configuration in serverless/resources/user-pool.yml
+# Caution: Do not change this function name without also changing the UserPool configuration.
+preTokenGenerationTrigger:
+  handler: src/main/functions/auth/cognito/pre-token-generation-trigger.handler
+
 preSignUpTrigger:
-  handler: src/main/functions/auth/pre-sign-up-trigger.handler
+  handler: src/main/functions/auth/cognito/pre-sign-up-trigger.handler
   events:
     - cognitoUserPool:
         pool: ${self:custom.cognito.UserPoolName}
@@ -42,10 +50,11 @@ preSignUpTrigger:
         existing: true
         forceDeploy: true
 
-# Currently, serverless framework does not provide any way to specify
-# which event version to use for the pre token generation trigger.
-# Therefore, this lambda needs to be manually configured to support the V2 event.
-# See: UserPool configuration in serverless/resources/user-pool.yml
-# Caution: Do not change this function name without also changing the UserPool configuration.
-preTokenGenerationTrigger:
-  handler: src/main/functions/auth/pre-token-generation-trigger.handler
+customMessageTrigger:
+  handler: src/main/functions/auth/cognito/custom-message-trigger.handler
+  events:
+    - cognitoUserPool:
+        pool: ${self:custom.cognito.UserPoolName}
+        trigger: CustomMessage
+        existing: true
+        forceDeploy: true
