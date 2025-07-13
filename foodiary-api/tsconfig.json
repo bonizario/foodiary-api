@@ -20,6 +20,8 @@
       "@/shared/*": ["src/shared/*"]
     },
 
+    "jsx": "react",
+
     /* Type Checking */
     "strict": true,
     "allowUnreachableCode": false,
