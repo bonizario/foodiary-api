@@ -1,4 +1,4 @@
-import { InvalidCredentials } from "@/application/errors/application/invalid-credentials-error";
+import { InvalidCredentialsError } from "@/application/errors/application/invalid-credentials-error";
 import { Injectable } from "@/core/decorators/injectable";
 import { AuthGateway } from "@/infrastructure/gateways/auth-gateway";
 
@@ -15,7 +15,7 @@ export class SignInUseCase {
         refreshToken,
       };
     } catch (error) {
-      throw new InvalidCredentials({ cause: error });
+      throw new InvalidCredentialsError({ cause: error });
     }
   }
 }

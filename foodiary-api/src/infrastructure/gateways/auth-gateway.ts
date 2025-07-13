@@ -2,6 +2,9 @@ import { createHmac } from "node:crypto";
 import { format } from "node:util";
 
 import {
+  CodeMismatchException,
+  ConfirmForgotPasswordCommand,
+  ExpiredCodeException,
   ForgotPasswordCommand,
   GetTokensFromRefreshTokenCommand,
   InitiateAuthCommand,
@@ -9,10 +12,12 @@ import {
   UserNotFoundException,
 } from "@aws-sdk/client-cognito-identity-provider";
 
+import { InvalidForgotPasswordConfirmationCodeError } from "@/application/errors/application/invalid-forgot-password-confirmation-code-error";
 import { Injectable } from "@/core/decorators/injectable";
 import { cognitoClient } from "@/infrastructure/clients/cognito-client";
 import { AppConfig } from "@/shared/config/app-config";
 
+// TODO: HANDLE OTHER KNOWN EXCEPTIONS FROM AWS SDK: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/cognito-identity-provider/command/ConfirmForgotPasswordCommand/
 @Injectable()
 export class AuthGateway {
   constructor(private readonly config: AppConfig) {}
@@ -23,12 +28,12 @@ export class AuthGateway {
   }: AuthGateway.SignInParams): Promise<AuthGateway.SignInResult> {
     const command = new InitiateAuthCommand({
       AuthFlow: "USER_PASSWORD_AUTH",
-      ClientId: this.config.auth.cognito.clientId,
       AuthParameters: {
-        USERNAME: email,
         PASSWORD: password,
         SECRET_HASH: this.getSecretHash(email),
+        USERNAME: email,
       },
+      ClientId: this.config.auth.cognito.clientId,
     });
 
     const { AuthenticationResult } = await cognitoClient.send(command);
@@ -50,7 +55,6 @@ export class AuthGateway {
   }: AuthGateway.SignUpParams): Promise<AuthGateway.SignUpResult> {
     const command = new SignUpCommand({
       ClientId: this.config.auth.cognito.clientId,
-      Username: email,
       Password: password,
       SecretHash: this.getSecretHash(email),
       UserAttributes: [
@@ -59,6 +63,7 @@ export class AuthGateway {
           Value: internalId,
         },
       ],
+      Username: email,
     });
 
     const { UserSub: externalId } = await cognitoClient.send(command);
@@ -77,8 +82,8 @@ export class AuthGateway {
   }: AuthGateway.RefreshTokenParams): Promise<AuthGateway.RefreshTokenResult> {
     const command = new GetTokensFromRefreshTokenCommand({
       ClientId: this.config.auth.cognito.clientId,
-      RefreshToken: refreshToken,
       ClientSecret: this.config.auth.cognito.clientSecret,
+      RefreshToken: refreshToken,
     });
 
     const { AuthenticationResult } = await cognitoClient.send(command);
@@ -98,8 +103,8 @@ export class AuthGateway {
   }: AuthGateway.ForgotPasswordParams): Promise<AuthGateway.ForgotPasswordResult> {
     const command = new ForgotPasswordCommand({
       ClientId: this.config.auth.cognito.clientId,
-      Username: email,
       SecretHash: this.getSecretHash(email),
+      Username: email,
     });
 
     try {
@@ -108,6 +113,33 @@ export class AuthGateway {
       if (error instanceof UserNotFoundException) {
         // swallow the error to prevent user enumeration
         return;
+      }
+      throw error;
+    }
+  }
+
+  public async confirmForgotPassword({
+    confirmationCode,
+    email,
+    newPassword,
+  }: AuthGateway.ConfirmForgotPasswordParams): Promise<AuthGateway.ConfirmForgotPasswordResult> {
+    try {
+      const command = new ConfirmForgotPasswordCommand({
+        ClientId: this.config.auth.cognito.clientId,
+        ConfirmationCode: confirmationCode,
+        Password: newPassword,
+        SecretHash: this.getSecretHash(email),
+        Username: email,
+      });
+
+      await cognitoClient.send(command);
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        // swallow the error to prevent user enumeration
+        return;
+      }
+      if (error instanceof CodeMismatchException || error instanceof ExpiredCodeException) {
+        throw new InvalidForgotPasswordConfirmationCodeError({ cause: error });
       }
       throw error;
     }
@@ -123,8 +155,8 @@ export class AuthGateway {
 export namespace AuthGateway {
   export type SignUpParams = {
     email: string;
-    password: string;
     internalId: string;
+    password: string;
   };
 
   export type SignUpResult = {
@@ -155,4 +187,12 @@ export namespace AuthGateway {
   };
 
   export type ForgotPasswordResult = void;
+
+  export type ConfirmForgotPasswordParams = {
+    confirmationCode: string;
+    email: string;
+    newPassword: string;
+  };
+
+  export type ConfirmForgotPasswordResult = void;
 }

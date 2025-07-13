@@ -1,7 +1,7 @@
 import { ApplicationError } from "@/application/errors/application/application-error";
 import { ErrorCode } from "@/application/errors/error-code";
 
-export class InvalidCredentials extends ApplicationError {
+export class InvalidCredentialsError extends ApplicationError {
   public override statusCode = 401;
 
   public override code: ErrorCode;
