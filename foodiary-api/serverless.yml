@@ -11,6 +11,7 @@ provider:
   iam:
     role: ${file(./serverless/config/role.yml)}
   httpApi:
+    disableDefaultEndpoint: ${env:DISABLE_DEFAULT_APIGW_ENDPOINT, false}
     authorizers:
       CognitoAuthorizer:
         type: jwt
