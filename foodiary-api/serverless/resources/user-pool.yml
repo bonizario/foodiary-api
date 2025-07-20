@@ -31,6 +31,11 @@ Resources:
         PreTokenGenerationConfig:
           LambdaArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-preTokenGenerationTrigger"
           LambdaVersion: V2_0
+      EmailConfiguration:
+        EmailSendingAccount: DEVELOPER
+        From: ${env:COGNITO_FROM_EMAIL}
+        ReplyToEmailAddress: ${env:COGNITO_REPLY_TO_EMAIL}
+        SourceArn: ${env:SES_SOURCE_ARN}
 
   PreTokenGenerationLambdaPermission:
     DependsOn: PreTokenGenerationTriggerLambdaFunction
