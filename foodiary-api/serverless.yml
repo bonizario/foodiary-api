@@ -38,3 +38,4 @@ functions:
 resources:
   - ${file(./serverless/resources/user-pool.yml)}
   - ${file(./serverless/resources/main-table.yml)}
+  - ${file(./serverless/resources/api-gw-custom-domain.yml)}
