@@ -1,17 +1,15 @@
 import { z } from "zod";
 
 import { Controller } from "@/application/contracts/controller";
-import { confirmationCodeSchema } from "@/application/controllers/auth/schemas/confirmation-code-schema";
-import { emailSchema } from "@/application/controllers/auth/schemas/email-schema";
+import { passwordSchema } from "@/application/controllers/auth/schemas/password-schema";
 import { ConfirmForgotPasswordUseCase } from "@/application/use-cases/auth/confirm-forgot-password-use-case";
 import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";
-import { signUpPasswordSchema } from "./schemas/sign-up-password-schema";
 
 const schema = z.object({
-  confirmationCode: confirmationCodeSchema,
-  email: emailSchema,
-  newPassword: signUpPasswordSchema,
+  confirmationCode: z.string().min(1),
+  email: z.string().email(),
+  newPassword: passwordSchema,
 });
 
 type RequestBody = z.output<typeof schema>;
