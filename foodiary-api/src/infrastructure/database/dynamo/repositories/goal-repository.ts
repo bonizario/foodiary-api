@@ -1,4 +1,4 @@
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, type PutCommandInput } from "@aws-sdk/lib-dynamodb";
 
 import type { Goal } from "@/application/entities/goal";
 import { Injectable } from "@/core/decorators/injectable";
@@ -10,14 +10,16 @@ import { AppConfig } from "@/shared/config/app-config";
 export class GoalRepository {
   constructor(private readonly config: AppConfig) {}
 
-  public async create(goal: Goal): Promise<void> {
+  public getPutCommandInput(goal: Goal): PutCommandInput {
     const goalItem = GoalItem.fromEntity(goal);
 
-    const command = new PutCommand({
+    return {
       TableName: this.config.db.dynamo.mainTable,
       Item: goalItem.toItem(),
-    });
+    };
+  }
 
-    await dynamoClient.send(command);
+  public async create(goal: Goal): Promise<void> {
+    await dynamoClient.send(new PutCommand(this.getPutCommandInput(goal)));
   }
 }
