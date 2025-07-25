@@ -43,12 +43,6 @@ export class SignUpUseCase {
       fats: 70,
     });
 
-    await this.signUpUnitOfWork.run({
-      account,
-      goal,
-      profile,
-    });
-
     const { externalId } = await this.authGateway.signUp({
       email,
       password,
@@ -57,14 +51,25 @@ export class SignUpUseCase {
 
     account.externalId = externalId;
 
-    await this.accountRepository.create(account);
+    try {
+      await this.signUpUnitOfWork.run({
+        account,
+        goal,
+        profile,
+      });
 
-    const { accessToken, refreshToken } = await this.authGateway.signIn({ email, password });
+      await this.accountRepository.create(account);
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+      const { accessToken, refreshToken } = await this.authGateway.signIn({ email, password });
+
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (error) {
+      this.authGateway.deleteUser({ externalId });
+      throw error;
+    }
   }
 }
 

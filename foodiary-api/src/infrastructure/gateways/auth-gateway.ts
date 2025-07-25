@@ -2,6 +2,7 @@ import { createHmac } from "node:crypto";
 import { format } from "node:util";
 
 import {
+  AdminDeleteUserCommand,
   CodeMismatchException,
   ConfirmForgotPasswordCommand,
   ExpiredCodeException,
@@ -145,6 +146,17 @@ export class AuthGateway {
     }
   }
 
+  public async deleteUser({
+    externalId,
+  }: AuthGateway.DeleteUserParams): Promise<AuthGateway.DeleteUserResult> {
+    const command = new AdminDeleteUserCommand({
+      UserPoolId: this.config.auth.cognito.poolId,
+      Username: externalId,
+    });
+
+    await cognitoClient.send(command);
+  }
+
   private getSecretHash(email: string): string {
     const { clientId, clientSecret } = this.config.auth.cognito;
 
@@ -195,4 +207,10 @@ export namespace AuthGateway {
   };
 
   export type ConfirmForgotPasswordResult = void;
+
+  export type DeleteUserParams = {
+    externalId: string;
+  };
+
+  export type DeleteUserResult = void;
 }
