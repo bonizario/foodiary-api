@@ -33,10 +33,11 @@ build:
     configFile: ./esbuild.config.mjs
 
 functions:
+  - ${file(./serverless/functions/accounts.yml)}
   - ${file(./serverless/functions/auth.yml)}
   - ${file(./serverless/functions/meals.yml)}
 
 resources:
-  - ${file(./serverless/resources/user-pool.yml)}
-  - ${file(./serverless/resources/main-table.yml)}
   - ${file(./serverless/resources/api-gw-custom-domain.yml)}
+  - ${file(./serverless/resources/main-table.yml)}
+  - ${file(./serverless/resources/user-pool.yml)}

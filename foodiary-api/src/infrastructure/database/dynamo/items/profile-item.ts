@@ -2,8 +2,9 @@ import { Profile } from "@/application/entities/profile";
 import type { AccountItem } from "@/infrastructure/database/dynamo/items/account-item";
 
 export class ProfileItem {
-  private readonly type = "Profile";
   private readonly keys: ProfileItem.Keys;
+
+  static readonly type = "Profile";
 
   constructor(private readonly attributes: ProfileItem.Attributes) {
     this.keys = {
@@ -16,7 +17,7 @@ export class ProfileItem {
     return {
       ...this.keys,
       ...this.attributes,
-      type: this.type,
+      type: ProfileItem.type,
     };
   }
 

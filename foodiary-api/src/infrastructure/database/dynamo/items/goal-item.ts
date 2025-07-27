@@ -2,8 +2,9 @@ import { Goal } from "@/application/entities/goal";
 import type { AccountItem } from "@/infrastructure/database/dynamo/items/account-item";
 
 export class GoalItem {
-  private readonly type = "Goal";
   private readonly keys: GoalItem.Keys;
+
+  static readonly type = "Goal";
 
   constructor(private readonly attributes: GoalItem.Attributes) {
     this.keys = {
@@ -16,7 +17,7 @@ export class GoalItem {
     return {
       ...this.keys,
       ...this.attributes,
-      type: this.type,
+      type: GoalItem.type,
     };
   }
 

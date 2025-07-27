@@ -10,6 +10,6 @@ export class InvalidCredentialsError extends ApplicationError {
     super("Invalid credentials", options);
 
     this.code = ErrorCode.INVALID_CREDENTIALS;
-    this.name = "InvalidCredentials";
+    this.name = "InvalidCredentialsError";
   }
 }

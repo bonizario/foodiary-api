@@ -14,10 +14,6 @@ export class ConfirmForgotPasswordUseCase {
   }
 }
 
-// UserNotFoundException
-// CodeMismatchException
-// ExpiredCodeException
-
 export namespace ConfirmForgotPasswordUseCase {
   export type Input = {
     confirmationCode: string;
