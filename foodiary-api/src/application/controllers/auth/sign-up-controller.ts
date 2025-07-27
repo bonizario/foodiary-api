@@ -22,6 +22,7 @@ const schema = z.object({
     height: z.number().min(1).max(300),
     weight: z.number().min(1).max(600),
     activityLevel: z.nativeEnum(Profile.ActivityLevel),
+    goal: z.nativeEnum(Profile.Goal),
   }),
 });
 
