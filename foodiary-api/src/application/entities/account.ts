@@ -19,9 +19,9 @@ export class Account {
 
 export namespace Account {
   export type Attributes = {
-    email: string;
+    id?: string | undefined;
     externalId?: string | undefined;
-    id?: string;
-    createdAt?: Date;
+    email: string;
+    createdAt?: Date | undefined;
   };
 }

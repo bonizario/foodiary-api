@@ -28,6 +28,6 @@ export namespace Goal {
     carbohydrates: number;
     fats: number;
     proteins: number;
-    createdAt?: Date;
+    createdAt?: Date | undefined;
   };
 }

@@ -43,9 +43,10 @@ export class SignUpController extends Controller<"public", ResponseBody> {
   protected override async handle(
     request: Controller.Request<"public", RequestBody>,
   ): Promise<Controller.Response<ResponseBody>> {
-    const { account, profile } = request.body;
-
-    const { accessToken, refreshToken } = await this.signUpUseCase.execute({ account, profile });
+    const { accessToken, refreshToken } = await this.signUpUseCase.execute({
+      account: request.body.account,
+      profile: request.body.profile,
+    });
 
     return {
       statusCode: 201,

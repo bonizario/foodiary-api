@@ -25,10 +25,12 @@ export class GetMeController extends Controller<"authenticated", ResponseBody> {
     super();
   }
 
-  protected override async handle({
-    accountId,
-  }: Controller.Request<"authenticated">): Promise<Controller.Response<ResponseBody>> {
-    const { goal, profile } = await this.getProfileAndGoalQuery.execute({ accountId });
+  protected override async handle(
+    request: Controller.Request<"authenticated">,
+  ): Promise<Controller.Response<ResponseBody>> {
+    const { goal, profile } = await this.getProfileAndGoalQuery.execute({
+      accountId: request.accountId,
+    });
 
     return {
       statusCode: 200,

@@ -40,7 +40,7 @@ export namespace Profile {
     weight: number;
     activityLevel: Profile.ActivityLevel;
     goal: Profile.Goal;
-    createdAt?: Date;
+    createdAt?: Date | undefined;
   };
 
   export enum BiologicalSex {
