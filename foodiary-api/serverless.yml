@@ -40,4 +40,5 @@ functions:
 resources:
   - ${file(./serverless/resources/api-gw-custom-domain.yml)}
   - ${file(./serverless/resources/main-table.yml)}
+  - ${file(./serverless/resources/meals-bucket.yml)}
   - ${file(./serverless/resources/user-pool.yml)}
