@@ -40,7 +40,15 @@ export class MealsFileStorageGateway {
       ],
     });
 
-    const uploadSignature = Buffer.from(JSON.stringify({ url, fields })).toString("base64");
+    const uploadSignature = Buffer.from(
+      JSON.stringify({
+        url,
+        fields: {
+          ...fields,
+          "Content-Type": contentType,
+        },
+      }),
+    ).toString("base64");
 
     return {
       uploadSignature,
