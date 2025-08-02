@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "dev:email": "email dev --dir ./src/infrastructure/emails/templates"
+    "dev:email": "email dev --dir ./src/infrastructure/emails/templates",
+    "create:meal": "node --experimental-strip-types scripts/create-meal.ts"
   },
   "packageManager": "pnpm@10.12.1",
   "devDependencies": {
