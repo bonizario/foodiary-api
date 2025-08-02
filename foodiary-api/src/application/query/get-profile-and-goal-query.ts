@@ -42,13 +42,13 @@ export class GetProfileAndGoalQuery {
       },
     });
 
-    const { Items } = await dynamoClient.send(command);
+    const { Items = [] } = await dynamoClient.send(command);
 
-    const profile = Items?.find(
+    const profile = Items.find(
       (item): item is GetProfileAndGoalQuery.ProfileDocument => item["type"] === ProfileItem.type,
     );
 
-    const goal = Items?.find(
+    const goal = Items.find(
       (item): item is GetProfileAndGoalQuery.GoalDocument => item["type"] === GoalItem.type,
     );
 
@@ -80,22 +80,14 @@ export namespace GetProfileAndGoalQuery {
   };
 
   export type Output = {
-    profile: {
-      name: string;
-      birthdate: string;
-      biologicalSex: Profile.BiologicalSex;
-      height: number;
-      weight: number;
-    };
-    goal: {
-      calories: number;
-      carbohydrates: number;
-      fats: number;
-      proteins: number;
-    };
+    profile: Omit<ProfileDocument, "PK" | "SK" | "type">;
+    goal: Omit<GoalDocument, "PK" | "SK" | "type">;
   };
 
   export type ProfileDocument = {
+    PK: string;
+    SK: string;
+    type: string;
     name: string;
     birthdate: string;
     biologicalSex: Profile.BiologicalSex;
@@ -104,6 +96,9 @@ export namespace GetProfileAndGoalQuery {
   };
 
   export type GoalDocument = {
+    PK: string;
+    SK: string;
+    type: string;
     calories: number;
     carbohydrates: number;
     fats: number;
