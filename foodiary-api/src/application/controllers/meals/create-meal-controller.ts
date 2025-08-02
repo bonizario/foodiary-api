@@ -21,6 +21,7 @@ type RequestBody = z.output<typeof schema>;
 
 type ResponseBody = {
   mealId: string;
+  uploadSignature: string;
 };
 
 @Injectable()
@@ -36,7 +37,7 @@ export class CreateMealController extends Controller<"authenticated", ResponseBo
     const inputType =
       request.body.file.type === "audio/m4a" ? Meal.InputType.AUDIO : Meal.InputType.IMAGE;
 
-    const { mealId } = await this.createMealUseCase.execute({
+    const { mealId, uploadSignature } = await this.createMealUseCase.execute({
       accountId: request.accountId,
       file: {
         inputType: inputType,
@@ -48,6 +49,7 @@ export class CreateMealController extends Controller<"authenticated", ResponseBo
       statusCode: 201,
       body: {
         mealId,
+        uploadSignature,
       },
     };
   }

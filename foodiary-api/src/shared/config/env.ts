@@ -8,6 +8,9 @@ const schema = z.object({
 
   // DynamoDB
   DYNAMO_MAIN_TABLE: z.string().min(1),
+
+  // S3 Bucket
+  MEALS_BUCKET: z.string().min(1),
 });
 
 export const env = schema.parse(process.env);
