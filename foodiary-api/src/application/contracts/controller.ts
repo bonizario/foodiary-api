@@ -53,9 +53,9 @@ export namespace Controller {
 
   export type Request<
     TRequestType extends RequestType,
-    TBody = Record<string, unknown>,
-    TParams = Record<string, unknown>,
-    TQueryParams = Record<string, unknown>,
+    TBody = Record<string, unknown> | undefined,
+    TParams = Record<string, unknown> | undefined,
+    TQueryParams = Record<string, unknown> | undefined,
   > = TRequestType extends "public"
     ? PublicRequest<TBody, TParams, TQueryParams>
     : AuthenticatedRequest<TBody, TParams, TQueryParams>;

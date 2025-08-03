@@ -6,9 +6,18 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const API_URL = "https://vjm9dwgvbf.execute-api.sa-east-1.amazonaws.com/meals";
-const TOKEN =
-  "eyJraWQiOiI5N0dzVVcrYnhUSXMrZGFcL2lmWXQwU2lvVnlnVnFjeDdQZWxEUUw5OXp0ND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2M2FjMmE2YS04MDMxLTcwY2YtNTcxMi01NDE5MDUyMzRjOWYiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuc2EtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3NhLWVhc3QtMV9wemdPUW91UVkiLCJjbGllbnRfaWQiOiI3NHRqbzJ1YWtrb3Y5MGJubWptMHJxbG9hYSIsIm9yaWdpbl9qdGkiOiI4YWMzMjMwYi04MmNhLTRhZmUtYTVkOC1jNGRkYWIwOGM2NjQiLCJpbnRlcm5hbElkIjoiMzBXdFU5aEZyQktSb0tsazVzbXptNG1KeEtBIiwiZXZlbnRfaWQiOiJkMTNmYmMwNy1kYWRmLTQ3NjEtYTgwNS0xMjZjOGQzZTM1YWIiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiYXV0aF90aW1lIjoxNzU0MTQzNTA5LCJleHAiOjE3NTQxODY3MDksImlhdCI6MTc1NDE0MzUwOSwianRpIjoiYTQ0OWI4ZTgtODBkNi00MzAwLTg3NjEtY2E4OWI4MDNlMTFkIiwidXNlcm5hbWUiOiI2M2FjMmE2YS04MDMxLTcwY2YtNTcxMi01NDE5MDUyMzRjOWYifQ.KlIIh-H-h5d3h_DHHuqQvaicM7z3Rn8m37xHVtJ2AaSaJ-8b8RTM3FBDIgDqwnKAVLgcTemPeWPyhDH107HwCO9U78mUli-ep8lXwP25h6HtG__sUXVpuCu0h8lSMzLBqU-6uamRkWpdtOFr7R4EPmJr0ceqNziyIpfm1eeGD7C92DZHAzA1_B3AHX4IDPYxjKfr_9Xx2k6O6ZmU50cAMhjZow7xc0oRC70FuM3EerApbnoYskfNNH6fBaUWVcv7wuE40CiZjRZKTs71q5ZzMwTB3DNohjthj9k623GD123No5DditKKgPr_SI4N_BWN0HHf5_iNugaq2C0hFXt48w";
+const AUTH_TOKEN = process.env["AUTH_TOKEN"];
+const CREATE_MEAL_API_URL = process.env["CREATE_MEAL_API_URL"];
+
+if (!AUTH_TOKEN) {
+  console.error("❌ AUTH_TOKEN is not set in environment variables");
+  process.exit(1);
+}
+
+if (!CREATE_MEAL_API_URL) {
+  console.error("❌ CREATE_MEAL_API_URL is not set in environment variables");
+  process.exit(1);
+}
 
 interface IPresignResponse {
   uploadSignature: string;
@@ -35,11 +44,11 @@ async function readImageFile(filePath: string): Promise<{
 
 async function createMeal(fileType: string, fileSize: number): Promise<IPresignDecoded> {
   console.log(`🚀 Requesting presigned POST for ${fileSize} bytes of type ${fileType}`);
-  const res = await fetch(API_URL, {
+  const res = await fetch(CREATE_MEAL_API_URL!, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${AUTH_TOKEN}`,
     },
     body: JSON.stringify({ file: { type: fileType, size: fileSize } }),
   });

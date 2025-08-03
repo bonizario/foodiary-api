@@ -5,7 +5,7 @@ import { Meal } from "@/application/entities/meal";
 import { ListMealsByDayQuery } from "@/application/query/list-meals-by-day-query";
 import { Injectable } from "@/core/decorators/injectable";
 
-const querySchema = z.object({
+const queryParamsSchema = z.object({
   date: z
     .string()
     .date("Date must be a valid date (YYYY-MM-DD format)")
@@ -31,7 +31,7 @@ export class ListMealsByDayController extends Controller<"authenticated", Respon
   protected override async handle(
     request: Controller.Request<"authenticated">,
   ): Promise<Controller.Response<ResponseBody>> {
-    const { date } = querySchema.parse(request.queryParams);
+    const { date } = queryParamsSchema.parse(request.queryParams);
 
     const { meals } = await this.listMealsByDayQuery.execute({
       accountId: request.accountId,
