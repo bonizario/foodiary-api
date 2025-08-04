@@ -36,6 +36,7 @@ functions:
   - ${file(./serverless/functions/accounts.yml)}
   - ${file(./serverless/functions/auth.yml)}
   - ${file(./serverless/functions/meals.yml)}
+  - ${file(./serverless/functions/profiles.yml)}
 
 resources:
   - ${file(./serverless/resources/api-gw-custom-domain.yml)}

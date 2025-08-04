@@ -10,19 +10,6 @@ import { AppConfig } from "@/shared/config/app-config";
 export class MealRepository {
   constructor(private readonly config: AppConfig) {}
 
-  public getPutCommandInput(meal: Meal): PutCommandInput {
-    const mealItem = MealItem.fromEntity(meal);
-
-    return {
-      TableName: this.config.db.dynamo.mainTable,
-      Item: mealItem.toItem(),
-    };
-  }
-
-  public async create(meal: Meal): Promise<void> {
-    await dynamoClient.send(new PutCommand(this.getPutCommandInput(meal)));
-  }
-
   public async findById({
     accountId,
     mealId,
@@ -42,6 +29,19 @@ export class MealRepository {
     }
 
     return MealItem.toEntity(mealItem as MealItem.Document);
+  }
+
+  public getPutCommandInput(meal: Meal): PutCommandInput {
+    const mealItem = MealItem.fromEntity(meal);
+
+    return {
+      TableName: this.config.db.dynamo.mainTable,
+      Item: mealItem.toItem(),
+    };
+  }
+
+  public async create(meal: Meal): Promise<void> {
+    await dynamoClient.send(new PutCommand(this.getPutCommandInput(meal)));
   }
 }
 

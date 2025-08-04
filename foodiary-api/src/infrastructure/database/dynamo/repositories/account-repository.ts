@@ -10,19 +10,6 @@ import { AppConfig } from "@/shared/config/app-config";
 export class AccountRepository {
   constructor(private readonly config: AppConfig) {}
 
-  public getPutCommandInput(account: Account): PutCommandInput {
-    const accountItem = AccountItem.fromEntity(account);
-
-    return {
-      TableName: this.config.db.dynamo.mainTable,
-      Item: accountItem.toItem(),
-    };
-  }
-
-  public async create(account: Account): Promise<void> {
-    await dynamoClient.send(new PutCommand(this.getPutCommandInput(account)));
-  }
-
   public async findByEmail(email: string): Promise<Account | null> {
     const command = new QueryCommand({
       IndexName: "GSI1",
@@ -48,5 +35,18 @@ export class AccountRepository {
     }
 
     return AccountItem.toEntity(account);
+  }
+
+  public getPutCommandInput(account: Account): PutCommandInput {
+    const accountItem = AccountItem.fromEntity(account);
+
+    return {
+      TableName: this.config.db.dynamo.mainTable,
+      Item: accountItem.toItem(),
+    };
+  }
+
+  public async create(account: Account): Promise<void> {
+    await dynamoClient.send(new PutCommand(this.getPutCommandInput(account)));
   }
 }
