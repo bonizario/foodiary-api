@@ -35,6 +35,7 @@ build:
 functions:
   - ${file(./serverless/functions/accounts.yml)}
   - ${file(./serverless/functions/auth.yml)}
+  - ${file(./serverless/functions/goals.yml)}
   - ${file(./serverless/functions/meals.yml)}
   - ${file(./serverless/functions/profiles.yml)}
 
