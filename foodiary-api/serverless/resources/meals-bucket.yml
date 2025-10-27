@@ -4,3 +4,35 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: ${self:service}-${self:provider.stage}-meals-bucket-bonizario
+
+  MealsBucketOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: MealsBucketOAC
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  MealsBucketCDN:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        HttpVersion: http2and3
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        Origins:
+          - DomainName: !GetAtt MealsBucket.RegionalDomainName
+            Id: MealsBucketOrigin
+            S3OriginConfig: {}
+            OriginAccessControlId: !Ref MealsBucketOAC
+        DefaultCacheBehavior:
+          Compress: true
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: MealsBucketOrigin
+          AllowedMethods:
+            - GET
+            - HEAD
+          # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-caching-optimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # CachingOptimized
