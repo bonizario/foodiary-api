@@ -4,7 +4,7 @@ service: foodiary-api
 provider:
   name: aws
   region: sa-east-1
-  runtime: nodejs22.x
+  runtime: nodejs24.x
   memorySize: 128
   stage: ${opt:stage, 'dev'}
   environment: ${file(./serverless/config/env.yml)}
