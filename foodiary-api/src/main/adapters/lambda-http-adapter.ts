@@ -1,6 +1,8 @@
 import type {
   APIGatewayProxyEventV2,
   APIGatewayProxyEventV2WithJWTAuthorizer,
+  APIGatewayProxyHandlerV2,
+  APIGatewayProxyHandlerV2WithJWTAuthorizer,
   APIGatewayProxyResultV2,
 } from "aws-lambda";
 import { ZodError } from "zod";
@@ -13,8 +15,11 @@ import { lambdaBodyParser } from "@/main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@/main/utils/lambda-error-response";
 
 type Event = APIGatewayProxyEventV2 | APIGatewayProxyEventV2WithJWTAuthorizer;
+type HttpHandler = APIGatewayProxyHandlerV2 | APIGatewayProxyHandlerV2WithJWTAuthorizer;
 
-export function lambdaHttpAdapter(controller: Controller<Controller.RequestType, unknown>) {
+export function lambdaHttpAdapter(
+  controller: Controller<Controller.RequestType, unknown>,
+): HttpHandler {
   return async (event: Event): Promise<APIGatewayProxyResultV2> => {
     try {
       const body = lambdaBodyParser(event.body);
