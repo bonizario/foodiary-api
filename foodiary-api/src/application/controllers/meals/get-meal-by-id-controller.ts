@@ -12,7 +12,7 @@ type ResponseBody = {
     id: string;
     status: Meal.Status;
     inputType: Meal.InputType;
-    inputFileKey: string;
+    inputFileUrl: string;
     name: string | null;
     icon: string | null;
     foods: Meal.Food[];
