@@ -24,10 +24,11 @@ export class MealsFileStorageGateway {
     return `https://${this.config.cdn.mealsCdn}/${fileKey}`;
   }
 
-  public async createPOST({
+  public async createPost({
     file,
+    accountId,
     mealId,
-  }: MealsFileStorageGateway.CreatePOSTParams): Promise<MealsFileStorageGateway.CreatePOSTResult> {
+  }: MealsFileStorageGateway.CreatePostParams): Promise<MealsFileStorageGateway.CreatePOSTResult> {
     const bucket = this.config.storage.mealsBucket;
     const contentType = file.inputType === Meal.InputType.AUDIO ? "audio/m4a" : "image/jpeg";
 
@@ -42,6 +43,7 @@ export class MealsFileStorageGateway {
         ["content-length-range", file.size, file.size],
       ],
       Fields: {
+        "x-amz-meta-account-id": accountId,
         "x-amz-meta-meal-id": mealId,
       },
     });
@@ -68,8 +70,9 @@ export namespace MealsFileStorageGateway {
     inputType: string;
   };
 
-  export type CreatePOSTParams = {
+  export type CreatePostParams = {
     mealId: string;
+    accountId: string;
     file: {
       key: string;
       size: number;
