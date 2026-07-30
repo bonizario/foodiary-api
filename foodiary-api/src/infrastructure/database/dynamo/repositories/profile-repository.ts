@@ -41,7 +41,7 @@ export class ProfileRepository {
     await dynamoClient.send(new PutCommand(this.getPutCommandInput(profile)));
   }
 
-  async save(profile: Profile): Promise<void> {
+  public async save(profile: Profile): Promise<void> {
     const profileItem = ProfileItem.fromEntity(profile).toItem();
 
     const command = new UpdateCommand({

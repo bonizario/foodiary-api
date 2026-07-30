@@ -9,9 +9,9 @@ export class Meal {
 
   processingAttempts: number;
 
-  inputType: Meal.InputType;
+  readonly inputType: Meal.InputType;
 
-  inputFileKey: string; // mandatory because currently there is no manual input
+  readonly inputFileKey: string; // mandatory because currently there is no manual input
 
   name: string;
 

@@ -41,7 +41,7 @@ export class GoalRepository {
     await dynamoClient.send(new PutCommand(this.getPutCommandInput(goal)));
   }
 
-  async save(goal: Goal): Promise<void> {
+  public async save(goal: Goal): Promise<void> {
     const goalItem = GoalItem.fromEntity(goal).toItem();
 
     const command = new UpdateCommand({
