@@ -1,5 +1,5 @@
-import { Tailwind } from "@react-email/tailwind";
 import React, { type ReactNode } from "react";
+import { Tailwind } from "react-email";
 
 type TailwindConfigProps = {
   children: ReactNode;

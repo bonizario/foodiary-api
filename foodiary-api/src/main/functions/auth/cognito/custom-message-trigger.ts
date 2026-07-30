@@ -1,5 +1,5 @@
-import { render } from "@react-email/render";
 import type { CustomMessageTriggerEvent } from "aws-lambda";
+import { render } from "react-email";
 
 import ForgotPassword from "@/infrastructure/emails/templates/forgot-password";
 

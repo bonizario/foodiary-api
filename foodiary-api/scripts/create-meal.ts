@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// @ts-expect-error workaround for `__dirname is not defined in ES module scope` error
+// @ts-expect-error this workaround raises ts(1470)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -80,7 +80,7 @@ function buildFormData(
   for (const [key, value] of Object.entries(fields)) {
     form.append(key, value);
   }
-  const blob = new Blob([fileData], { type: fileType });
+  const blob = new Blob([new Uint8Array(fileData)], { type: fileType });
   form.append("file", blob, filename);
   return form;
 }
