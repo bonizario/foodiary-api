@@ -2,10 +2,10 @@ import type { FileEventHandler } from "@/application/contracts/file-event-handle
 import { Injectable } from "@/core/decorators/injectable";
 
 @Injectable()
-export class MealUploadedFileEventHandler implements FileEventHandler {
+export class MealImageUploadedEventHandler implements FileEventHandler {
   public async handle({ fileKey }: FileEventHandler.Input): Promise<void> {
     console.log({
-      MealUploadedFileEventHandler: {
+      MealImageUploadedEventHandler: {
         fileKey,
       },
     });
