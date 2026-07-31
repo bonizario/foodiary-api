@@ -26,7 +26,6 @@ package:
 custom:
   cognito:
     UserPoolName: ${self:service}-${self:provider.stage}-user-pool
-    UserPoolClientName: ${self:service}-${self:provider.stage}-user-pool-client
 
 build:
   esbuild:
@@ -44,3 +43,4 @@ resources:
   - ${file(./serverless/resources/main-table.yml)}
   - ${file(./serverless/resources/meals-bucket.yml)}
   - ${file(./serverless/resources/user-pool.yml)}
+  - ${file(./serverless/resources/meals-queue.yml)}

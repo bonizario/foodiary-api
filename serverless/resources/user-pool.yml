@@ -49,7 +49,7 @@ Resources:
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
-      ClientName: ${self:custom.cognito.UserPoolClientName}
+      ClientName: ${self:service}-${self:provider.stage}-user-pool-client
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
         - ALLOW_USER_PASSWORD_AUTH

@@ -18,3 +18,8 @@ statements:
       - s3:GetObject
       - s3:PutObject
     Resource: !Sub "${MealsBucket.Arn}/*"
+
+  - Effect: Allow
+    Action:
+      - sqs:SendMessage
+    Resource: !GetAtt MealsQueue.Arn

@@ -3,12 +3,14 @@ import { ResourceNotFoundError } from "@/application/errors/application/resource
 import { Injectable } from "@/core/decorators/injectable";
 import { MealRepository } from "@/infrastructure/database/dynamo/repositories/meal-repository";
 import { MealsFileStorageGateway } from "@/infrastructure/gateways/meals-file-storage-gateway";
+import { MealsQueueGateway } from "@/infrastructure/gateways/meals-queue-gateway";
 
 @Injectable()
 export class MealImageUploadedUseCase {
   constructor(
     private readonly mealRepository: MealRepository,
     private readonly mealsFileStorageGateway: MealsFileStorageGateway,
+    private readonly mealsQueueGateway: MealsQueueGateway,
   ) {}
 
   public async execute(
@@ -27,6 +29,8 @@ export class MealImageUploadedUseCase {
     meal.status = Meal.Status.QUEUED;
 
     await this.mealRepository.save(meal);
+
+    await this.mealsQueueGateway.publish({ accountId, mealId });
   }
 }
 
