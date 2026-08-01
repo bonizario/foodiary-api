@@ -14,3 +14,22 @@ Resources:
     Properties:
       QueueName: ${self:service}-${self:provider.stage}-meals-dlq
       MessageRetentionPeriod: 1209600 # 14 days
+
+  MealsDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: ${self:service}-${self:provider.stage}-meals-dlq-alarm
+      AlarmDescription: Alarm for Meals DLQ
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt MealsDLQ.QueueName
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref DLQAlarmsTopic

@@ -44,3 +44,4 @@ resources:
   - ${file(./serverless/resources/meals-bucket.yml)}
   - ${file(./serverless/resources/user-pool.yml)}
   - ${file(./serverless/resources/meals-queue.yml)}
+  - ${file(./serverless/resources/dlq-alarms-topic.yml)}
