@@ -1,5 +1,9 @@
-import { SQSEvent } from "aws-lambda";
+import "reflect-metadata";
 
-export async function handler(event: SQSEvent): Promise<void> {
-  console.log(JSON.stringify(event, null, 2));
-}
+import { MealsQueueConsumer } from "@/application/queues/meals-queue-consumer";
+import { Registry } from "@/core/di/registry";
+import { lambdaSqsAdapter } from "@/main/adapters/lambda-sqs-adapter";
+
+const consumer = Registry.getInstance().resolve(MealsQueueConsumer);
+
+export const handler = lambdaSqsAdapter(consumer);
