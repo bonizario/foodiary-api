@@ -1,13 +1,17 @@
 import { Meal } from "@/application/entities/meal";
 import { ResourceNotFoundError } from "@/application/errors/application/resource-not-found-error";
 import { Injectable } from "@/core/decorators/injectable";
+import { MealsAIGateway } from "@/infrastructure/ai/gateways/meals-ai-gateway";
 import { MealRepository } from "@/infrastructure/database/dynamo/repositories/meal-repository";
 
 const MAX_PROCESSING_ATTEMPTS = 2;
 
 @Injectable()
 export class ProcessMealUseCase {
-  constructor(private readonly mealRepository: MealRepository) {}
+  constructor(
+    private readonly mealRepository: MealRepository,
+    private readonly mealsAIGateway: MealsAIGateway,
+  ) {}
 
   public async execute(dto: ProcessMealUseCase.Input): Promise<ProcessMealUseCase.Output> {
     const meal = await this.mealRepository.findById({
@@ -38,20 +42,12 @@ export class ProcessMealUseCase {
       meal.processingAttempts += 1;
       await this.mealRepository.save(meal);
 
-      // process with OpenAI - currently mocked
+      const { name, icon, foods } = await this.mealsAIGateway.processMeal(meal);
+
       meal.status = Meal.Status.SUCCESS;
-      meal.name = "Coffee break";
-      meal.icon = "☕";
-      meal.foods = [
-        {
-          name: "Coffee",
-          calories: 100,
-          carbohydrates: 10,
-          fats: 5,
-          proteins: 5,
-          quantity: "2 cups",
-        },
-      ];
+      meal.name = name;
+      meal.icon = icon;
+      meal.foods = foods;
 
       await this.mealRepository.save(meal);
     } catch (error) {

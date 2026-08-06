@@ -31,9 +31,11 @@
     "@aws-sdk/lib-dynamodb": "3.1101.0",
     "@aws-sdk/s3-presigned-post": "3.1101.0",
     "ksuid": "3.0.0",
+    "openai": "7.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "reflect-metadata": "0.2.2",
+    "ts-dedent": "2.3.0",
     "zod": "4.4.3"
   }
 }
