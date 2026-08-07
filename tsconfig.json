@@ -3,6 +3,8 @@
     "lib": ["ES2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
     "module": "NodeNext",
     "target": "ES2022",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
 
     "esModuleInterop": true,
     "skipLibCheck": true,

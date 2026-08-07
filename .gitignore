@@ -6,3 +6,5 @@ build
 dist
 node_modules
 .claude
+scripts/assets/*.m4a
+.DS_Store

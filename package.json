@@ -4,7 +4,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "dev:email": "email dev --dir ./src/infrastructure/emails/templates",
-    "create:meal": "node --experimental-strip-types --env-file=.env.development ./scripts/create-meal.ts"
+    "dev:meal:create": "node --env-file=.env.development ./scripts/create-meal.mts"
   },
   "packageManager": "pnpm@10.12.1",
   "devDependencies": {
