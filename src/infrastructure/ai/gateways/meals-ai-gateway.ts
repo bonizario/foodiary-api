@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import OpenAI, { toFile } from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 
@@ -6,6 +6,7 @@ import { Meal } from "@/application/entities/meal";
 import { Injectable } from "@/core/decorators/injectable";
 import { getImagePrompt } from "@/infrastructure/ai/prompts/get-image-prompt";
 import { MealsFileStorageGateway } from "@/infrastructure/gateways/meals-file-storage-gateway";
+import { downloadFileFromUrl } from "@/shared/utils/download-file-from-url";
 
 const mealSchema = z.object({
   name: z.string(),
@@ -29,9 +30,9 @@ export class MealsAIGateway {
   constructor(private readonly mealsFileStorageGateway: MealsFileStorageGateway) {}
 
   public async processMeal(meal: Meal): Promise<MealsAIGateway.ProcessMealResult> {
-    if (meal.inputType === Meal.InputType.IMAGE) {
-      const imageUrl = this.mealsFileStorageGateway.getFileUrl(meal.inputFileKey);
+    const mealFileUrl = this.mealsFileStorageGateway.getFileUrl(meal.inputFileKey);
 
+    if (meal.inputType === Meal.InputType.IMAGE) {
       const response = await this.client.chat.completions.create({
         model: "gpt-4.1-mini",
         response_format: zodResponseFormat(mealSchema, "meal"),
@@ -46,7 +47,7 @@ export class MealsAIGateway {
               {
                 type: "image_url",
                 image_url: {
-                  url: imageUrl,
+                  url: mealFileUrl,
                   detail: "high",
                 },
               },
@@ -76,6 +77,15 @@ export class MealsAIGateway {
 
       return data;
     }
+
+    const audioFile = await downloadFileFromUrl(mealFileUrl);
+
+    const response = await this.client.audio.transcriptions.create({
+      model: "whisper-1",
+      file: await toFile(audioFile, `${meal.id}.m4a`, { type: "audio/m4a" }),
+    });
+
+    console.log(JSON.stringify(response, null, 2));
 
     return {
       name: "Meal name",
