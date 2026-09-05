@@ -132,7 +132,7 @@ async function uploadMeal(kind: InputKind): Promise<void> {
   await uploadToS3(url, form);
 }
 
-uploadMeal(resolveInputKind()).catch((err) => {
-  log.fail(`Error during uploadMeal: ${err instanceof Error ? err.message : String(err)}`);
+uploadMeal(resolveInputKind()).catch((error) => {
+  log.fail(`Error during uploadMeal: ${error instanceof Error ? error.message : String(error)}`);
   process.exit(1);
 });

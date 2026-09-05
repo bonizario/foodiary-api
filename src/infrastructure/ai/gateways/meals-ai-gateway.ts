@@ -1,12 +1,20 @@
-import OpenAI, { toFile } from "openai";
+import { OpenAI } from "openai/client";
 import { zodResponseFormat } from "openai/helpers/zod";
+import type {
+  ChatCompletionSystemMessageParam,
+  ChatCompletionUserMessageParam,
+} from "openai/resources";
+import { toFile } from "openai/uploads";
 import { z } from "zod";
 
 import { Meal } from "@/application/entities/meal";
 import { Injectable } from "@/core/decorators/injectable";
 import { getImagePrompt } from "@/infrastructure/ai/prompts/get-image-prompt";
+import { getTextPrompt } from "@/infrastructure/ai/prompts/get-text-prompt";
+import { OpenAIResponseError } from "@/infrastructure/errors/open-ai-response-error";
 import { MealsFileStorageGateway } from "@/infrastructure/gateways/meals-file-storage-gateway";
 import { downloadFileFromUrl } from "@/shared/utils/download-file-from-url";
+import { jsonCodec } from "@/shared/utils/zod-json-codec";
 
 const mealSchema = z.object({
   name: z.string(),
@@ -23,6 +31,8 @@ const mealSchema = z.object({
   ),
 });
 
+const mealJsonCodec = jsonCodec(mealSchema);
+
 @Injectable()
 export class MealsAIGateway {
   private readonly client = new OpenAI();
@@ -33,65 +43,80 @@ export class MealsAIGateway {
     const mealFileUrl = this.mealsFileStorageGateway.getFileUrl(meal.inputFileKey);
 
     if (meal.inputType === Meal.InputType.IMAGE) {
-      const response = await this.client.chat.completions.create({
-        model: "gpt-4.1-mini",
-        response_format: zodResponseFormat(mealSchema, "meal"),
-        messages: [
+      return await this.callAI({
+        mealId: meal.id,
+        systemPrompt: getImagePrompt(),
+        userPrompt: [
           {
-            role: "system",
-            content: getImagePrompt(),
+            type: "image_url",
+            image_url: {
+              url: mealFileUrl,
+              detail: "high",
+            },
           },
           {
-            role: "user",
-            content: [
-              {
-                type: "image_url",
-                image_url: {
-                  url: mealFileUrl,
-                  detail: "high",
-                },
-              },
-              {
-                type: "text",
-                text: `Meal date: ${meal.createdAt}`,
-              },
-            ],
+            type: "text",
+            text: `Meal date: ${meal.createdAt}`,
           },
         ],
       });
-
-      const content = response.choices[0]?.message.content;
-
-      if (!content) {
-        console.error("OpenAI response:", response);
-        throw new Error(`Failed to process meal with id "${meal.id}"`);
-      }
-
-      const { success, data, error } = mealSchema.safeParse(JSON.parse(content));
-
-      if (!success) {
-        console.error("Zod error:", error);
-        console.error("OpenAI response:", response);
-        throw new Error(`Failed to process meal with id "${meal.id}"`);
-      }
-
-      return data;
     }
 
-    const audioFile = await downloadFileFromUrl(mealFileUrl);
+    const mealTranscription = await this.transcribe(mealFileUrl);
 
-    const response = await this.client.audio.transcriptions.create({
-      model: "whisper-1",
-      file: await toFile(audioFile, `${meal.id}.m4a`, { type: "audio/m4a" }),
+    return await this.callAI({
+      mealId: meal.id,
+      systemPrompt: getTextPrompt(),
+      userPrompt: `Meal date: ${meal.createdAt}\n\nMeal: ${mealTranscription}`,
+    });
+  }
+
+  private async callAI({
+    mealId,
+    systemPrompt,
+    userPrompt,
+  }: MealsAIGateway.CallAIParams): Promise<MealsAIGateway.ProcessMealResult> {
+    const response = await this.client.chat.completions.create({
+      model: "gpt-4.1-mini",
+      response_format: zodResponseFormat(mealSchema, "meal"),
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: userPrompt,
+        },
+      ],
     });
 
-    console.log(JSON.stringify(response, null, 2));
+    const content = response.choices[0]?.message.content;
 
-    return {
-      name: "Meal name",
-      icon: "Meal icon",
-      foods: [],
-    };
+    if (!content) {
+      throw new OpenAIResponseError(`Open AI returned an empty response for meal "${mealId}"`);
+    }
+
+    const { success, data, error } = mealJsonCodec.safeDecode(content);
+
+    if (!success) {
+      throw new OpenAIResponseError(`Open AI returned an invalid response for meal "${mealId}"`, {
+        cause: error,
+      });
+    }
+
+    return data;
+  }
+
+  private async transcribe(audioFileUrl: string): Promise<string> {
+    const audioFile = await downloadFileFromUrl(audioFileUrl);
+
+    const { text } = await this.client.audio.transcriptions.create({
+      model: "gpt-4o-mini-transcribe",
+      file: await toFile(audioFile, "audio.m4a", { type: "audio/m4a" }),
+    });
+
+    return text;
   }
 }
 
@@ -100,5 +125,11 @@ export namespace MealsAIGateway {
     name: string;
     icon: string;
     foods: Meal.Food[];
+  };
+
+  export type CallAIParams = {
+    mealId: string;
+    systemPrompt: ChatCompletionSystemMessageParam["content"];
+    userPrompt: ChatCompletionUserMessageParam["content"];
   };
 }
