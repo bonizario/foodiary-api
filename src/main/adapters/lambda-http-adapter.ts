@@ -11,17 +11,21 @@ import type { Controller } from "@/application/contracts/controller";
 import { ApplicationError } from "@/application/errors/application/application-error";
 import { ErrorCode } from "@/application/errors/error-code";
 import { HttpError } from "@/application/errors/http/http-error";
+import { Registry } from "@/core/di/registry";
 import { lambdaBodyParser } from "@/main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@/main/utils/lambda-error-response";
+import type { Constructor } from "@/shared/types/constructor";
 
 type Event = APIGatewayProxyEventV2 | APIGatewayProxyEventV2WithJWTAuthorizer;
 type HttpHandler = APIGatewayProxyHandlerV2 | APIGatewayProxyHandlerV2WithJWTAuthorizer;
 
 export function lambdaHttpAdapter(
-  controller: Controller<Controller.RequestType, unknown>,
+  controllerImpl: Constructor<Controller<Controller.RequestType, unknown>>,
 ): HttpHandler {
   return async (event: Event): Promise<APIGatewayProxyResultV2> => {
     try {
+      const controller = Registry.getInstance().resolve(controllerImpl);
+
       const body = lambdaBodyParser(event.body);
       const params = event.pathParameters ?? {};
       const queryParams = event.queryStringParameters ?? {};

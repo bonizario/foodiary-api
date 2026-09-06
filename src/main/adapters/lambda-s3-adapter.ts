@@ -1,8 +1,13 @@
-import type { FileEventHandler } from "@/application/contracts/file-event-handler";
 import type { S3Event, S3Handler } from "aws-lambda";
 
-export function lambdaS3Adapter(eventHandler: FileEventHandler): S3Handler {
+import type { FileEventHandler } from "@/application/contracts/file-event-handler";
+import { Registry } from "@/core/di/registry";
+import type { Constructor } from "@/shared/types/constructor";
+
+export function lambdaS3Adapter(eventHandlerImpl: Constructor<FileEventHandler>): S3Handler {
   return async (event: S3Event): Promise<void> => {
+    const eventHandler = Registry.getInstance().resolve(eventHandlerImpl);
+
     const results = await Promise.allSettled(
       event.Records.map((record) =>
         eventHandler.handle({
