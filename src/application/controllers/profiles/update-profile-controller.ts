@@ -8,7 +8,7 @@ import { Schema } from "@/core/decorators/schema";
 
 const schema = z.object({
   name: z.string().min(1).max(100),
-  birthdate: z
+  birthdate: z.iso
     .date("Birthdate must be a valid date (YYYY-MM-DD format)")
     .transform((date) => new Date(date)),
   biologicalSex: z.enum(Profile.BiologicalSex),
