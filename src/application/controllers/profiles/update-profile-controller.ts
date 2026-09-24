@@ -9,12 +9,11 @@ import { Schema } from "@/core/decorators/schema";
 const schema = z.object({
   name: z.string().min(1).max(100),
   birthdate: z
-    .string()
     .date("Birthdate must be a valid date (YYYY-MM-DD format)")
     .transform((date) => new Date(date)),
-  biologicalSex: z.nativeEnum(Profile.BiologicalSex),
-  height: z.number().min(1).max(300),
-  weight: z.number().min(1).max(600),
+  biologicalSex: z.enum(Profile.BiologicalSex),
+  height: z.number().min(1).max(500),
+  weight: z.number().min(1).max(500),
 });
 
 type RequestBody = z.output<typeof schema>;

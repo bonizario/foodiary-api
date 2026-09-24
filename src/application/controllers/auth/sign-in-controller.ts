@@ -6,7 +6,7 @@ import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(8).max(128),
 });
 

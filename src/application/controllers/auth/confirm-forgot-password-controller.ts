@@ -8,7 +8,7 @@ import { Schema } from "@/core/decorators/schema";
 
 const schema = z.object({
   confirmationCode: z.string().min(1),
-  email: z.string().email(),
+  email: z.email(),
   newPassword: passwordSchema,
 });
 

@@ -6,7 +6,7 @@ import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 
 type RequestBody = z.output<typeof schema>;

@@ -6,10 +6,7 @@ import { ListMealsByDayQuery } from "@/application/query/list-meals-by-day-query
 import { Injectable } from "@/core/decorators/injectable";
 
 const queryParamsSchema = z.object({
-  date: z
-    .string()
-    .date("Date must be a valid date (YYYY-MM-DD format)")
-    .transform((date) => new Date(date)),
+  date: z.date("Date must be a valid date (YYYY-MM-DD format)").transform((date) => new Date(date)),
 });
 
 type ResponseBody = {

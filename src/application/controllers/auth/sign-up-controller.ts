@@ -9,20 +9,19 @@ import { Schema } from "@/core/decorators/schema";
 
 const schema = z.object({
   account: z.object({
-    email: z.string().email(),
+    email: z.email(),
     password: passwordSchema,
   }),
   profile: z.object({
     name: z.string().min(1).max(100),
     birthdate: z
-      .string()
       .date("Birthdate must be a valid date (YYYY-MM-DD format)")
       .transform((date) => new Date(date)),
-    biologicalSex: z.nativeEnum(Profile.BiologicalSex),
-    height: z.number().min(1).max(300),
-    weight: z.number().min(1).max(600),
-    activityLevel: z.nativeEnum(Profile.ActivityLevel),
-    goal: z.nativeEnum(Profile.Goal),
+    biologicalSex: z.enum(Profile.BiologicalSex),
+    height: z.number().min(1).max(500),
+    weight: z.number().min(1).max(500),
+    activityLevel: z.enum(Profile.ActivityLevel),
+    goal: z.enum(Profile.Goal),
   }),
 });
 

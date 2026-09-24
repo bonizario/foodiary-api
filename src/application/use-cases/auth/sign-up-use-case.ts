@@ -31,12 +31,12 @@ export class SignUpUseCase {
       const profile = new Profile({
         accountId: account.id,
         name: dto.profile.name,
-        birthdate: dto.profile.birthdate,
+        goal: dto.profile.goal,
         biologicalSex: dto.profile.biologicalSex,
+        birthdate: dto.profile.birthdate,
         height: dto.profile.height,
         weight: dto.profile.weight,
         activityLevel: dto.profile.activityLevel,
-        goal: dto.profile.goal,
       });
 
       const { calories, carbohydrates, fats, proteins } = GoalCalculator.calculate(profile);
@@ -87,12 +87,12 @@ export namespace SignUpUseCase {
     };
     profile: {
       name: string;
-      birthdate: Date;
+      goal: Profile.Goal;
       biologicalSex: Profile.BiologicalSex;
+      birthdate: Date;
       height: number;
       weight: number;
       activityLevel: Profile.ActivityLevel;
-      goal: Profile.Goal;
     };
   };
 
