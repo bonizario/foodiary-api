@@ -10,6 +10,7 @@ type ResponseBody = {
     biologicalSex: Profile.BiologicalSex;
     height: number;
     weight: number;
+    goal: Profile.Goal;
   };
   goal: {
     calories: number;
