@@ -1,7 +1,7 @@
 import type { S3Event, S3Handler } from "aws-lambda";
 
 import type { FileEventHandler } from "@/application/contracts/file-event-handler";
-import { Registry } from "@/core/di/registry";
+import { Registry } from "@/kernel/di/registry";
 import type { Constructor } from "@/shared/types/constructor";
 
 export function lambdaS3Adapter(eventHandlerImpl: Constructor<FileEventHandler>): S3Handler {

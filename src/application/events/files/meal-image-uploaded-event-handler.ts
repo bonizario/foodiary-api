@@ -1,6 +1,6 @@
 import type { FileEventHandler } from "@/application/contracts/file-event-handler";
 import { MealImageUploadedUseCase } from "@/application/use-cases/meals/meal-image-uploaded-use-case";
-import { Injectable } from "@/core/decorators/injectable";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 @Injectable()
 export class MealImageUploadedEventHandler implements FileEventHandler {

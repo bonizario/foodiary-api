@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Controller } from "@/application/contracts/controller";
 import { Meal } from "@/application/entities/meal";
 import { ListMealsByDayQuery } from "@/application/query/list-meals-by-day-query";
-import { Injectable } from "@/core/decorators/injectable";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 const queryParamsSchema = z.object({
   date: z.iso.date("Date must be a valid date (YYYY-MM-DD format)"),

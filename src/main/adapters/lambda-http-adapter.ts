@@ -11,7 +11,7 @@ import type { Controller } from "@/application/contracts/controller";
 import { ApplicationError } from "@/application/errors/application/application-error";
 import { ErrorCode } from "@/application/errors/error-code";
 import { HttpError } from "@/application/errors/http/http-error";
-import { Registry } from "@/core/di/registry";
+import { Registry } from "@/kernel/di/registry";
 import { lambdaBodyParser } from "@/main/utils/lambda-body-parser";
 import { lambdaErrorResponse } from "@/main/utils/lambda-error-response";
 import type { Constructor } from "@/shared/types/constructor";

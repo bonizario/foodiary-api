@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import { Controller } from "@/application/contracts/controller";
 import { SignInUseCase } from "@/application/use-cases/auth/sign-in-use-case";
-import { Injectable } from "@/core/decorators/injectable";
-import { Schema } from "@/core/decorators/schema";
+import { Injectable } from "@/kernel/decorators/injectable";
+import { Schema } from "@/kernel/decorators/schema";
 
 const schema = z.object({
   email: z.email(),

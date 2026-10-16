@@ -1,7 +1,7 @@
 import type { QueueConsumer } from "@/application/contracts/queue-consumer";
 import { ProcessMealUseCase } from "@/application/use-cases/meals/process-meal-use-case";
-import { Injectable } from "@/core/decorators/injectable";
 import type { MealsQueueGateway } from "@/infrastructure/gateways/meals-queue-gateway";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 @Injectable()
 export class MealsQueueConsumer implements QueueConsumer<MealsQueueGateway.Message> {

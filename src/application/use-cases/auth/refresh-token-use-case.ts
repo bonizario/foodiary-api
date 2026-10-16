@@ -1,6 +1,6 @@
 import { InvalidRefreshTokenError } from "@/application/errors/application/invalid-refresh-token-error";
-import { Injectable } from "@/core/decorators/injectable";
 import { AuthGateway } from "@/infrastructure/gateways/auth-gateway";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 @Injectable()
 export class RefreshTokenUseCase {

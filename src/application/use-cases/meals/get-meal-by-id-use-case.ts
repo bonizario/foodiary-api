@@ -1,8 +1,8 @@
 import { Meal } from "@/application/entities/meal";
 import { ResourceNotFoundError } from "@/application/errors/application/resource-not-found-error";
-import { Injectable } from "@/core/decorators/injectable";
 import { MealRepository } from "@/infrastructure/database/dynamo/repositories/meal-repository";
 import { MealsFileStorageGateway } from "@/infrastructure/gateways/meals-file-storage-gateway";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 @Injectable()
 export class GetMealByIdUseCase {

@@ -1,7 +1,7 @@
 import { Controller } from "@/application/contracts/controller";
 import type { Profile } from "@/application/entities/profile";
 import { GetProfileAndGoalQuery } from "@/application/query/get-profile-and-goal-query";
-import { Injectable } from "@/core/decorators/injectable";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 type ResponseBody = {
   profile: {

@@ -1,4 +1,4 @@
-import { getSchema } from "@/core/decorators/schema";
+import { getSchema } from "@/kernel/decorators/schema";
 
 export abstract class Controller<TRequestType extends Controller.RequestType, TBody = undefined> {
   protected abstract handle(

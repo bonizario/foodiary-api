@@ -1,11 +1,11 @@
 import { Account } from "@/application/entities/account";
 import { Goal } from "@/application/entities/goal";
 import { Profile } from "@/application/entities/profile";
-import { Injectable } from "@/core/decorators/injectable";
 import { AccountRepository } from "@/infrastructure/database/dynamo/repositories/account-repository";
 import { GoalRepository } from "@/infrastructure/database/dynamo/repositories/goal-repository";
 import { ProfileRepository } from "@/infrastructure/database/dynamo/repositories/profile-repository";
 import { UnitOfWork } from "@/infrastructure/database/dynamo/unit-of-work/unit-of-work";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 @Injectable()
 export class SignUpUnitOfWork extends UnitOfWork {

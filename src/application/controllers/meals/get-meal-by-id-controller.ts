@@ -1,7 +1,7 @@
 import { Controller } from "@/application/contracts/controller";
 import { Meal } from "@/application/entities/meal";
 import { GetMealByIdUseCase } from "@/application/use-cases/meals/get-meal-by-id-use-case";
-import { Injectable } from "@/core/decorators/injectable";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 type RequestParams = {
   mealId: string;

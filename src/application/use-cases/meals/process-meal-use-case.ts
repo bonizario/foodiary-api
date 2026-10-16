@@ -1,8 +1,8 @@
 import { Meal } from "@/application/entities/meal";
 import { ResourceNotFoundError } from "@/application/errors/application/resource-not-found-error";
-import { Injectable } from "@/core/decorators/injectable";
 import { MealsAIGateway } from "@/infrastructure/ai/gateways/meals-ai-gateway";
 import { MealRepository } from "@/infrastructure/database/dynamo/repositories/meal-repository";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 const MAX_PROCESSING_ATTEMPTS = 2;
 

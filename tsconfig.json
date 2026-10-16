@@ -15,8 +15,8 @@
 
     "paths": {
       "@/application/*": ["./src/application/*"],
-      "@/core/*": ["./src/core/*"],
       "@/infrastructure/*": ["./src/infrastructure/*"],
+      "@/kernel/*": ["./src/kernel/*"],
       "@/main/*": ["./src/main/*"],
       "@/shared/*": ["./src/shared/*"]
     },

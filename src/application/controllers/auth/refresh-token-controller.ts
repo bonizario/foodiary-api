@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import { Controller } from "@/application/contracts/controller";
 import { RefreshTokenUseCase } from "@/application/use-cases/auth/refresh-token-use-case";
-import { Injectable } from "@/core/decorators/injectable";
-import { Schema } from "@/core/decorators/schema";
+import { Injectable } from "@/kernel/decorators/injectable";
+import { Schema } from "@/kernel/decorators/schema";
 
 const schema = z.object({
   refreshToken: z.string().min(1),

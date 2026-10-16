@@ -3,11 +3,11 @@ import { Goal } from "@/application/entities/goal";
 import { Profile } from "@/application/entities/profile";
 import { EmailAlreadyInUseError } from "@/application/errors/application/email-already-in-use-error";
 import { GoalCalculator } from "@/application/services/goal-calculator";
-import { Injectable } from "@/core/decorators/injectable";
 import { AccountRepository } from "@/infrastructure/database/dynamo/repositories/account-repository";
 import { SignUpUnitOfWork } from "@/infrastructure/database/dynamo/unit-of-work/sign-up-unit-of-work";
 import { AuthGateway } from "@/infrastructure/gateways/auth-gateway";
-import { Saga } from "@/shared/saga/saga";
+import { Injectable } from "@/kernel/decorators/injectable";
+import { Saga } from "@/kernel/saga";
 
 @Injectable()
 export class SignUpUseCase {

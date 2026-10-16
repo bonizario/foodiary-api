@@ -8,11 +8,11 @@ import { toFile } from "openai/uploads";
 import { z } from "zod";
 
 import { Meal } from "@/application/entities/meal";
-import { Injectable } from "@/core/decorators/injectable";
 import { getImagePrompt } from "@/infrastructure/ai/prompts/get-image-prompt";
 import { getTextPrompt } from "@/infrastructure/ai/prompts/get-text-prompt";
 import { OpenAIResponseError } from "@/infrastructure/errors/open-ai-response-error";
 import { MealsFileStorageGateway } from "@/infrastructure/gateways/meals-file-storage-gateway";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { downloadFileFromUrl } from "@/shared/utils/download-file-from-url";
 import { jsonCodec } from "@/shared/utils/zod-json-codec";
 

@@ -1,5 +1,5 @@
-import { Injectable } from "@/core/decorators/injectable";
 import { sqsClient } from "@/infrastructure/clients/sqs-client";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 

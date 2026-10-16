@@ -1,9 +1,9 @@
 import { GetCommand, PutCommand, UpdateCommand, type PutCommandInput } from "@aws-sdk/lib-dynamodb";
 
 import type { Profile } from "@/application/entities/profile";
-import { Injectable } from "@/core/decorators/injectable";
 import { dynamoClient } from "@/infrastructure/clients/dynamo-client";
 import { ProfileItem } from "@/infrastructure/database/dynamo/items/profile-item";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 
 @Injectable()

@@ -1,9 +1,9 @@
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 import { Meal } from "@/application/entities/meal";
-import { Injectable } from "@/core/decorators/injectable";
 import { dynamoClient } from "@/infrastructure/clients/dynamo-client";
 import { MealItem } from "@/infrastructure/database/dynamo/items/meal-item";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 
 @Injectable()

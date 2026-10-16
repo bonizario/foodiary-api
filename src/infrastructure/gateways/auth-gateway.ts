@@ -14,8 +14,8 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 
 import { InvalidForgotPasswordConfirmationCodeError } from "@/application/errors/application/invalid-forgot-password-confirmation-code-error";
-import { Injectable } from "@/core/decorators/injectable";
 import { cognitoClient } from "@/infrastructure/clients/cognito-client";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 
 // TODO: HANDLE OTHER KNOWN EXCEPTIONS FROM AWS SDK: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/cognito-identity-provider/command/ConfirmForgotPasswordCommand/

@@ -3,8 +3,8 @@ import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import KSUID from "ksuid";
 
 import { Meal } from "@/application/entities/meal";
-import { Injectable } from "@/core/decorators/injectable";
 import { s3Client } from "@/infrastructure/clients/s3-client";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 import { minutesToSeconds } from "@/shared/utils/minutes-to-seconds";
 

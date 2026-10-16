@@ -4,8 +4,8 @@ import { Controller } from "@/application/contracts/controller";
 import { passwordSchema } from "@/application/controllers/auth/schemas/password-schema";
 import { Profile } from "@/application/entities/profile";
 import { SignUpUseCase } from "@/application/use-cases/auth/sign-up-use-case";
-import { Injectable } from "@/core/decorators/injectable";
-import { Schema } from "@/core/decorators/schema";
+import { Injectable } from "@/kernel/decorators/injectable";
+import { Schema } from "@/kernel/decorators/schema";
 
 const schema = z.object({
   account: z.object({

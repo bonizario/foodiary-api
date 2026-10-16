@@ -1,4 +1,4 @@
-import { Injectable } from "@/core/decorators/injectable";
+import { Injectable } from "@/kernel/decorators/injectable";
 
 type CompensationFunction = () => Promise<void>;
 

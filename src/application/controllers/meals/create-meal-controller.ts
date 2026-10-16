@@ -3,8 +3,8 @@ import { z } from "zod";
 import { Controller } from "@/application/contracts/controller";
 import { Meal } from "@/application/entities/meal";
 import { CreateMealUseCase } from "@/application/use-cases/meals/create-meal-use-case";
-import { Injectable } from "@/core/decorators/injectable";
-import { Schema } from "@/core/decorators/schema";
+import { Injectable } from "@/kernel/decorators/injectable";
+import { Schema } from "@/kernel/decorators/schema";
 import { timeZoneSchema } from "@/shared/schemas/time-zone-schema";
 import { mbToBytes } from "@/shared/utils/mb-to-bytes";
 

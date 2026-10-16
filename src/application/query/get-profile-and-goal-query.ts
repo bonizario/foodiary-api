@@ -2,11 +2,11 @@ import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 import type { Profile } from "@/application/entities/profile";
 import { ResourceNotFoundError } from "@/application/errors/application/resource-not-found-error";
-import { Injectable } from "@/core/decorators/injectable";
 import { dynamoClient } from "@/infrastructure/clients/dynamo-client";
 import { AccountItem } from "@/infrastructure/database/dynamo/items/account-item";
 import { GoalItem } from "@/infrastructure/database/dynamo/items/goal-item";
 import { ProfileItem } from "@/infrastructure/database/dynamo/items/profile-item";
+import { Injectable } from "@/kernel/decorators/injectable";
 import { AppConfig } from "@/shared/config/app-config";
 
 @Injectable()
@@ -64,7 +64,7 @@ export class GetProfileAndGoalQuery {
         biologicalSex: profile.biologicalSex,
         height: profile.height,
         weight: profile.weight,
-        goal: profile.goal
+        goal: profile.goal,
       },
       goal: {
         calories: goal.calories,

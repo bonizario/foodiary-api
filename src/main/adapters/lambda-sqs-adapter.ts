@@ -1,7 +1,7 @@
 import type { SQSEvent, SQSHandler } from "aws-lambda";
 
 import type { QueueConsumer } from "@/application/contracts/queue-consumer";
-import { Registry } from "@/core/di/registry";
+import { Registry } from "@/kernel/di/registry";
 import type { Constructor } from "@/shared/types/constructor";
 
 export function lambdaSqsAdapter(queueConsumerImpl: Constructor<QueueConsumer>): SQSHandler {

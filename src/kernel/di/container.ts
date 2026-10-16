@@ -1,3 +1,3 @@
-import { Registry } from "@/core/di/registry";
+import { Registry } from "@/kernel/di/registry";
 
 export const container = Registry.getInstance();
