@@ -1,4 +1,5 @@
 import { Meal } from "@/application/entities/meal";
+import { getLocalDay } from "@/shared/utils/get-local-day";
 
 export class MealItem {
   private readonly keys: MealItem.Keys;
@@ -17,7 +18,7 @@ export class MealItem {
       }),
       GSI1PK: MealItem.getGSI1PK({
         accountId: this.attributes.accountId,
-        createdAt: new Date(this.attributes.createdAt),
+        localDay: this.attributes.localDay,
       }),
       GSI1SK: MealItem.getGSI1SK(this.attributes.id),
     };
@@ -43,6 +44,8 @@ export class MealItem {
       icon: meal.icon,
       foods: meal.foods,
       createdAt: meal.createdAt.toISOString(),
+      timeZone: meal.timeZone,
+      localDay: getLocalDay(meal.createdAt, meal.timeZone),
     });
   }
 
@@ -58,6 +61,7 @@ export class MealItem {
       icon: mealItem.icon,
       foods: mealItem.foods,
       createdAt: new Date(mealItem.createdAt),
+      timeZone: mealItem.timeZone,
     });
   }
 
@@ -69,12 +73,8 @@ export class MealItem {
     return `ACCOUNT#${accountId}#MEAL#${mealId}`;
   }
 
-  public static getGSI1PK({ accountId, createdAt }: MealItem.GS1PKParams): MealItem.Keys["GSI1PK"] {
-    // Use local date components for GSI1PK
-    const year = createdAt.getFullYear();
-    const month = String(createdAt.getMonth() + 1).padStart(2, "0");
-    const day = String(createdAt.getDate()).padStart(2, "0");
-    return `MEALS#${accountId}#${year}-${month}-${day}`;
+  public static getGSI1PK({ accountId, localDay }: MealItem.GS1PKParams): MealItem.Keys["GSI1PK"] {
+    return `MEALS#${accountId}#${localDay}`;
   }
 
   public static getGSI1SK(mealId: string): MealItem.Keys["GSI1SK"] {
@@ -86,7 +86,7 @@ export namespace MealItem {
   export type Keys = {
     PK: `ACCOUNT#${string}#MEAL#${string}`;
     SK: `ACCOUNT#${string}#MEAL#${string}`;
-    GSI1PK: `MEALS#${string}#${string}-${string}-${string}`;
+    GSI1PK: `MEALS#${string}#${string}`; // MEALS#<accountId>#<localDay YYYY-MM-DD>
     GSI1SK: `MEAL#${string}`;
   };
 
@@ -101,6 +101,8 @@ export namespace MealItem {
     icon: string;
     foods: Meal.Food[];
     createdAt: string;
+    timeZone: string;
+    localDay: string;
   };
 
   export type Document = Keys &
@@ -120,6 +122,6 @@ export namespace MealItem {
 
   export type GS1PKParams = {
     accountId: string;
-    createdAt: Date;
+    localDay: string;
   };
 }

@@ -1,11 +1,11 @@
 import {
-  PutCommandInput,
   TransactWriteCommand,
-  TransactWriteCommandInput,
+  type PutCommandInput,
+  type TransactWriteCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 
 import { dynamoClient } from "@/infrastructure/clients/dynamo-client";
-import { RequireAtLeastOne } from "@/shared/types/require-at-least-one";
+import type { RequireAtLeastOne } from "@/shared/types/require-at-least-one";
 
 type TransactItem = RequireAtLeastOne<
   NonNullable<TransactWriteCommandInput["TransactItems"]>[number]

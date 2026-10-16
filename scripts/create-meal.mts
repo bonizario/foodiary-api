@@ -75,7 +75,10 @@ async function createMeal(fileType: string, fileSize: number): Promise<IPresignD
       "Content-Type": "application/json",
       Authorization: `Bearer ${ACCESS_TOKEN}`,
     },
-    body: JSON.stringify({ file: { type: fileType, size: fileSize } }),
+    body: JSON.stringify({
+      file: { type: fileType, size: fileSize },
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    }),
   });
 
   if (!res.ok) {

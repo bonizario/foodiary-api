@@ -6,9 +6,7 @@ import { ListMealsByDayQuery } from "@/application/query/list-meals-by-day-query
 import { Injectable } from "@/core/decorators/injectable";
 
 const queryParamsSchema = z.object({
-  date: z.iso
-    .date("Date must be a valid date (YYYY-MM-DD format)")
-    .transform((date) => new Date(date)),
+  date: z.iso.date("Date must be a valid date (YYYY-MM-DD format)"),
 });
 
 type ResponseBody = {
@@ -18,6 +16,7 @@ type ResponseBody = {
     icon: string;
     foods: Meal.Food[];
     createdAt: string;
+    timeZone: string;
   }[];
 };
 

@@ -5,6 +5,7 @@ import { Meal } from "@/application/entities/meal";
 import { CreateMealUseCase } from "@/application/use-cases/meals/create-meal-use-case";
 import { Injectable } from "@/core/decorators/injectable";
 import { Schema } from "@/core/decorators/schema";
+import { timeZoneSchema } from "@/shared/schemas/time-zone-schema";
 import { mbToBytes } from "@/shared/utils/mb-to-bytes";
 
 const schema = z.object({
@@ -15,6 +16,7 @@ const schema = z.object({
       .min(1, "File size must be greater than or equal to 1")
       .max(mbToBytes(10), "File size must be less than or equal to 10 MB (10_485_760 bytes)"),
   }),
+  timeZone: timeZoneSchema,
 });
 
 type RequestBody = z.output<typeof schema>;
@@ -39,6 +41,7 @@ export class CreateMealController extends Controller<"authenticated", ResponseBo
 
     const { mealId, uploadSignature } = await this.createMealUseCase.execute({
       accountId: request.accountId,
+      timeZone: request.body.timeZone,
       file: {
         inputType: inputType,
         size: request.body.file.size,

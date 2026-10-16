@@ -21,6 +21,7 @@ export class CreateMealUseCase {
       status: Meal.Status.UPLOADING,
       inputType: dto.file.inputType,
       inputFileKey,
+      timeZone: dto.timeZone,
     });
 
     const [, { uploadSignature }] = await Promise.all([
@@ -46,6 +47,7 @@ export class CreateMealUseCase {
 export namespace CreateMealUseCase {
   export type Input = {
     accountId: string;
+    timeZone: string;
     file: {
       inputType: Meal.InputType;
       size: number;

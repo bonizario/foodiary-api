@@ -33,6 +33,7 @@ export class GetMealByIdUseCase {
         icon: meal.icon,
         foods: meal.foods,
         createdAt: meal.createdAt,
+        timeZone: meal.timeZone,
       },
     };
   }
@@ -54,6 +55,7 @@ export namespace GetMealByIdUseCase {
       icon: string | null;
       foods: Meal.Food[];
       createdAt: Date;
+      timeZone: string;
     };
   };
 }

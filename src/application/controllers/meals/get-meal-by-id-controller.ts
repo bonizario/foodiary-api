@@ -17,6 +17,7 @@ type ResponseBody = {
     icon: string | null;
     foods: Meal.Food[];
     createdAt: Date;
+    timeZone: string;
   };
 };
 

@@ -17,7 +17,7 @@ export class ListMealsByDayQuery {
     const command = new QueryCommand({
       TableName: this.config.db.dynamo.mainTable,
       IndexName: "GSI1",
-      ProjectionExpression: "#GSI1PK, #id, #name, #icon, #foods, #createdAt",
+      ProjectionExpression: "#GSI1PK, #id, #name, #icon, #foods, #createdAt, #timeZone",
       KeyConditionExpression: "#GSI1PK = :GSI1PK",
       FilterExpression: "#status = :status",
       ScanIndexForward: false,
@@ -29,10 +29,10 @@ export class ListMealsByDayQuery {
         "#icon": "icon",
         "#foods": "foods",
         "#createdAt": "createdAt",
+        "#timeZone": "timeZone",
       },
-
       ExpressionAttributeValues: {
-        ":GSI1PK": MealItem.getGSI1PK({ accountId, createdAt: date }),
+        ":GSI1PK": MealItem.getGSI1PK({ accountId, localDay: date }),
         ":status": Meal.Status.SUCCESS,
       },
     });
@@ -45,6 +45,7 @@ export class ListMealsByDayQuery {
       icon: item["icon"],
       foods: item["foods"],
       createdAt: item["createdAt"],
+      timeZone: item["timeZone"],
     }));
 
     return {
@@ -56,7 +57,7 @@ export class ListMealsByDayQuery {
 export namespace ListMealsByDayQuery {
   export type Input = {
     accountId: string;
-    date: Date;
+    date: string;
   };
 
   export type Output = {
@@ -71,5 +72,6 @@ export namespace ListMealsByDayQuery {
     icon: string;
     foods: Meal.Food[];
     createdAt: string;
+    timeZone: string;
   };
 }

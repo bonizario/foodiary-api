@@ -21,6 +21,8 @@ export class Meal {
 
   readonly createdAt: Date;
 
+  readonly timeZone: string;
+
   constructor(attributes: Meal.Attributes) {
     this.id = attributes.id ?? KSUID.randomSync().string;
     this.accountId = attributes.accountId;
@@ -32,6 +34,7 @@ export class Meal {
     this.icon = attributes.icon ?? "";
     this.foods = attributes.foods ?? [];
     this.createdAt = attributes.createdAt ?? new Date();
+    this.timeZone = attributes.timeZone;
   }
 }
 
@@ -47,6 +50,7 @@ export namespace Meal {
     icon?: string | undefined;
     foods?: Meal.Food[] | undefined;
     createdAt?: Date | undefined;
+    timeZone: string;
   };
 
   export enum Status {

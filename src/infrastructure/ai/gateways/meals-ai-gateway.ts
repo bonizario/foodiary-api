@@ -42,6 +42,12 @@ export class MealsAIGateway {
   public async processMeal(meal: Meal): Promise<MealsAIGateway.ProcessMealResult> {
     const mealFileUrl = this.mealsFileStorageGateway.getFileUrl(meal.inputFileKey);
 
+    const mealDate = new Intl.DateTimeFormat("pt-BR", {
+      timeZone: meal.timeZone,
+      dateStyle: "full",
+      timeStyle: "short",
+    }).format(meal.createdAt);
+
     if (meal.inputType === Meal.InputType.IMAGE) {
       return await this.callAI({
         mealId: meal.id,
@@ -56,7 +62,7 @@ export class MealsAIGateway {
           },
           {
             type: "text",
-            text: `Meal date: ${meal.createdAt}`,
+            text: `Meal date: ${mealDate}`,
           },
         ],
       });
@@ -67,7 +73,7 @@ export class MealsAIGateway {
     return await this.callAI({
       mealId: meal.id,
       systemPrompt: getTextPrompt(),
-      userPrompt: `Meal date: ${meal.createdAt}\n\nMeal: ${mealTranscription}`,
+      userPrompt: `Meal date: ${mealDate}\n\nMeal: ${mealTranscription}`,
     });
   }
 
