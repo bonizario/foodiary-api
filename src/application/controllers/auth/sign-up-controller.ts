@@ -14,9 +14,7 @@ const schema = z.object({
   }),
   profile: z.object({
     name: z.string().min(1).max(100),
-    birthdate: z.iso
-      .date("Birthdate must be a valid date (YYYY-MM-DD format)")
-      .transform((date) => new Date(date)),
+    birthdate: z.iso.date("Birthdate must be a valid date (YYYY-MM-DD format)"),
     biologicalSex: z.enum(Profile.BiologicalSex),
     height: z.number().min(1).max(500),
     weight: z.number().min(1).max(500),

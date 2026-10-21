@@ -57,6 +57,8 @@ export class GetProfileAndGoalQuery {
       throw new ResourceNotFoundError("Account not found");
     }
 
+    console.log("PROFILE:", JSON.stringify(profile));
+
     return {
       profile: {
         name: profile.name,

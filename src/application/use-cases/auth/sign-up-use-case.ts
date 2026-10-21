@@ -89,7 +89,7 @@ export namespace SignUpUseCase {
       name: string;
       goal: Profile.Goal;
       biologicalSex: Profile.BiologicalSex;
-      birthdate: Date;
+      birthdate: string;
       height: number;
       weight: number;
       activityLevel: Profile.ActivityLevel;

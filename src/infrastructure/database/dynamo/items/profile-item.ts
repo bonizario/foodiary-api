@@ -25,7 +25,7 @@ export class ProfileItem {
     return new ProfileItem({
       accountId: profile.accountId,
       name: profile.name,
-      birthdate: profile.birthdate.toISOString(),
+      birthdate: profile.birthdate,
       biologicalSex: profile.biologicalSex,
       height: profile.height,
       weight: profile.weight,
@@ -39,7 +39,7 @@ export class ProfileItem {
     return new Profile({
       accountId: profileItem.accountId,
       name: profileItem.name,
-      birthdate: new Date(profileItem.birthdate),
+      birthdate: profileItem.birthdate,
       biologicalSex: profileItem.biologicalSex,
       height: profileItem.height,
       weight: profileItem.weight,

@@ -28,7 +28,7 @@ export namespace UpdateProfileUseCase {
   export type Input = {
     accountId: string;
     name: string;
-    birthdate: Date;
+    birthdate: string;
     biologicalSex: Profile.BiologicalSex;
     height: number;
     weight: number;

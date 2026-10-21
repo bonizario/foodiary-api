@@ -3,7 +3,7 @@ export class Profile {
 
   name: string;
 
-  birthdate: Date;
+  birthdate: string;
 
   biologicalSex: Profile.BiologicalSex;
 
@@ -34,7 +34,7 @@ export namespace Profile {
   export type Attributes = {
     accountId: string;
     name: string;
-    birthdate: Date;
+    birthdate: string;
     biologicalSex: Profile.BiologicalSex;
     height: number;
     weight: number;

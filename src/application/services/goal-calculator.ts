@@ -59,9 +59,8 @@ export class GoalCalculator {
     activityLevel,
     goal,
   }: Profile): number {
-    const today = new Date();
-    const birthYear = birthdate.getFullYear();
-    const age = today.getFullYear() - birthYear;
+    const birthYear = Number(birthdate.slice(0, 4));
+    const age = new Date().getFullYear() - birthYear;
 
     // Basal Metabolic Rate
     const bmr =
